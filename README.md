@@ -1,6 +1,6 @@
 # Design-Patterns-Swift
 
-#Decorator
+Decorator
 
 ```
 import UIKit
