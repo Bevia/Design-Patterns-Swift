@@ -1,9 +1,8 @@
 import UIKit
 
 ///Decorator Design Pattern main functions:
-///attain to the O of SOLID, Open for extension, close for modification
-///to extend the codebase, to compose an object
-///all these at runtime
+///conforms to the O of SOLID, Open for extension, close for modification
+///to extend the codebase, to compose an object at runtime
 
 ///with out Decorator design pattern you would have to keep on modifying this Computer_ object!
 
