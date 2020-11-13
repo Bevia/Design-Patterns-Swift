@@ -34,7 +34,7 @@ protocol Component{
     func description() -> String
 }
 
-//this is going the bucket where I drop my decoration components.
+//this is going to be the bucket where I drop my decoration components.
 enum Components : String{
     case Computer = "my computer "
     case ExternalHDD = "with an External Hard Disk Drive "
