@@ -32,6 +32,8 @@ class BrandAComputer : Computer{
 }
 
 class ComputerDecorator : Computer{
+    
+    //The computer instance is use to forward request to the concrete computer object
     let computer : Computer
     
     init(computer : Computer) {
@@ -52,7 +54,6 @@ class ComputerDecorator : Computer{
 
 //first decorator is going to be an external HDD
 class ExternalHDD : ComputerDecorator{
-   
     override func description() -> String {
         return computer.description() + " with an external HDD"
     }
@@ -65,7 +66,6 @@ class ExternalHDD : ComputerDecorator{
 
 
 class Monitor : ComputerDecorator{
-   
     override func description() -> String {
         return computer.description() + " and a 23 inch monitor"
     }
@@ -98,7 +98,7 @@ class BrandBComputer : Computer{
     }
 }
 
-//and use the decorators already in place, or you can extend it even more. 
+//and use the decorators already in place, or you can extend it even more.
 myComputer = BrandBComputer()
 //myComputer = ExternalHDD(computer : myComputer)
 myComputer = Monitor(computer: myComputer)
