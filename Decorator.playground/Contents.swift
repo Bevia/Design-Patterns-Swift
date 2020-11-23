@@ -6,79 +6,100 @@ import UIKit
 
 ///with out Decorator design pattern you would have to keep on modifying this Computer_ object!
 
-//class Computer_ {
-//
-//    func description(){
-//        //print("Computer")
-//        //print("Computer with external HDD")
-//        print("Computer with external HDD and a High Definition Monitor")
-//    }
-//}
-
-//let computer : Computer_ = Computer_()
-//computer.description()
-
 ///so if you want to add an external HDD
 ///or High Definition Monitor, you need to constanly modify your main component
 ///thus, this violates O in SOLID
 
 ///Best approach
 
-//create a component
-protocol Component{
+//create a abstract component
+protocol Computer{
     func description() -> String
-}
-
-//this is going the bucket where I drop my decoration components.
-enum Components : String{
-    case Computer = "my computer "
-    case ExternalHDD = "with an External Hard Disk Drive "
-    case Monitor = "and a 24 inche monitor "
+    func price() -> Int
 }
 
 //lets create my main component now, this component will be wrapped by other decorator components
-class Computer : Component{
+class BrandAComputer : Computer{
+   
     func description() -> String {
-        return Components.Computer.rawValue
+        //return Components.Computer.rawValue
+        return "Brand A Computer"
+    }
+    
+    func price() -> Int {
+        return 1000
     }
 }
 
-//now we create my decorator class
-//notice that the decorator subscribes to the Dependency Inversion definition in SOLID
-//also, notice that the decorator is really a wrapper...it's going to wrap components!
-protocol Decorator : Component{
-    var component : Component { get }
+class ComputerDecorator : Computer{
+    let computer : Computer
+    
+    init(computer : Computer) {
+        self.computer = computer
+    }
+    
+    
+    func description() -> String {
+        return computer.description()
+    }
+    
+    func price() -> Int {
+        computer.price()
+    }
+    
 }
 
 
 //first decorator is going to be an external HDD
-class ExternalHDD : Decorator{
-    var component: Component
-    
-    init(component: Component) {
-        self.component = component
+class ExternalHDD : ComputerDecorator{
+   
+    override func description() -> String {
+        return computer.description() + " with an external HDD"
     }
     
+    override func price() -> Int {
+        computer.price() + 500
+    }
+    
+}
+
+
+class Monitor : ComputerDecorator{
+   
+    override func description() -> String {
+        return computer.description() + " and a 23 inch monitor"
+    }
+    
+    override func price() -> Int {
+        computer.price() + 280
+    }
+    
+}
+
+//you can recursively include or exclude decorator items.
+//just keep your main component, which is been wrapped, in this case the Computer.
+
+var myComputer : Computer = BrandAComputer()
+//myComputer = ExternalHDD(computer : myComputer)
+myComputer = Monitor(computer: myComputer)
+print("\(myComputer.description()) and a price of \(myComputer.price())" )
+
+///we can now add another component:
+
+
+class BrandBComputer : Computer{
     func description() -> String {
-        return  component.description() + Components.ExternalHDD.rawValue
+        //return Components.Computer.rawValue
+        return "Brand B Computer"
+    }
+    
+    func price() -> Int {
+        return 2200
     }
 }
 
-//another decorator, we can use a struct too
-struct Monitor : Decorator{
-    var component: Component
-    
-    func description() -> String {
-        return component.description() + Components.Monitor.rawValue
-    }
-}
-
-//you can include or exclude decorator items with no problem
-//just keep your main component, in this case the Computer.
-
-var myComputer : Component = Computer()
-//myComputer = ExternalHDD(component: myComputer)
-//myComputer = Monitor(component: myComputer)
-
-
-print(myComputer.description())
+//and use the decorators already in place, or you can extend it even more. 
+myComputer = BrandBComputer()
+//myComputer = ExternalHDD(computer : myComputer)
+myComputer = Monitor(computer: myComputer)
+print("\(myComputer.description()) and a price of \(myComputer.price())" )
